@@ -12,6 +12,8 @@ import construction from '@/assets/gifts/construction.png';
 import lotion from '@/assets/gifts/lotion.png';
 import onesie from '@/assets/gifts/onesie.png';
 import towel from '@/assets/gifts/towel.png';
+import { FloatingBalloons } from "./Baloons";
+import confetti from "canvas-confetti";
 
 const images = [
   one,
@@ -28,6 +30,28 @@ function EnvelopeScreen({ onComplete }: { onComplete: () => void }) {
   const handleOpen = () => {
     if (isOpen) return;
     setIsOpen(true);
+
+    // Confetti effect
+    const duration = 5 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
+
+    function randomInRange(min: number, max: number) {
+      return Math.random() * (max - min) + min;
+    }
+
+    const interval: any = setInterval(function() {
+      const timeLeft = animationEnd - Date.now();
+
+      if (timeLeft <= 0) {
+        return clearInterval(interval);
+      }
+
+      const particleCount = 50 * (timeLeft / duration);
+      confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+      confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+    }, 250);
+
     setTimeout(() => {
       setIsExiting(true);
     }, 8000);
@@ -40,10 +64,12 @@ function EnvelopeScreen({ onComplete }: { onComplete: () => void }) {
         <motion.div
           exit={{ opacity: 0, scale: 1.1, filter: "blur(20px)" }}
           transition={{ duration: 1.2, ease: "easeIn" }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[#3b8fcb]/95 backdrop-blur-3xl overflow-hidden"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-[#f0f9ff] via-[#e0f2fe] to-[#bae6fd] backdrop-blur-3xl overflow-hidden"
         >
-          {/* Cinematic warm lighting simulation */}
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-amber-50/10 rounded-[100%] blur-[120px] pointer-events-none mix-blend-screen"></div>
+          <FloatingBalloons />
+          {/* Sunny lighting simulation */}
+          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-yellow-100/30 rounded-full blur-[100px] pointer-events-none transform translate-x-1/4 -translate-y-1/4"></div>
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-white/40 rounded-[100%] blur-[120px] pointer-events-none mix-blend-overlay"></div>
 
           <motion.div
             whileHover={!isOpen ? { scale: 1.02, rotateZ: 0.5 } : undefined}
@@ -64,7 +90,7 @@ function EnvelopeScreen({ onComplete }: { onComplete: () => void }) {
                     },
                   }
             }
-            className="relative w-[300px] h-[300px] max-w-[90vw] max-h-[90vh] sm:w-[440px] sm:h-[440px] perspective-1000 cursor-pointer group drop-shadow-[0_40px_80px_rgba(0,0,0,0.3)]"
+            className="relative w-[300px] h-[300px] max-w-[90vw] max-h-[90vh] sm:w-[440px] sm:h-[440px] perspective-1000 cursor-pointer group drop-shadow-[0_40px_80px_rgba(0,0,0,0.5)]"
             onClick={handleOpen}
           >
             {/* Envelope Back (Inside) */}
@@ -173,48 +199,27 @@ function EnvelopeScreen({ onComplete }: { onComplete: () => void }) {
 
               {/* Flap Front (Visible when closed) */}
               <div className="absolute inset-0 origin-top backface-hidden">
-
-                {/* 🌤️ Soft light blue ambient background */}
-                <div className="absolute inset-0 bg-gradient-to-b from-[#eaf6ff] via-[#f8fcff] to-[#f0ece3] opacity-70" />
-
-                {/* ✉️ Envelope flap */}
                 <div
-                  className="absolute inset-0 bg-gradient-to-b from-[#fdfcf9] via-[#eef7ff] to-[#f0ece3] border-b border-white/80"
+                  className="absolute inset-0 bg-gradient-to-b from-[#fdfcf9] to-[#f0ece3] border-b border-white/80"
                   style={{ clipPath: "polygon(0 0, 100% 0, 50% 50%)" }}
                 />
-
-                {/* ✨ Soft edge lighting for depth */}
-                <div className="absolute inset-0 pointer-events-none">
-                  <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-blue-100/30 to-transparent" />
-                  <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-blue-50/20 to-transparent" />
-                </div>
-
+                {/* Red Wax Seal */}
                 <motion.div
-                    initial={{ opacity: 1, scale: 1 }}
-                    animate={isOpen ? { opacity: 0, scale: 0.8 } : { opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.4 }}
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 rounded-full z-[60] flex items-center justify-center drop-shadow-[0_4px_12px_rgba(0,0,0,0.25)] pointer-events-auto transition-transform"
-                    style={{
-                      backgroundImage:
-                        "radial-gradient(circle at 35% 35%, #bfe6ff 0%, #7cc7f2 45%, #3b8fcb 100%)",
-                      boxShadow:
-                        "inset 0 2px 6px rgba(255,255,255,0.6), inset 0 -5px 10px rgba(0,0,0,0.25), 0 4px 10px rgba(0,0,0,0.15)"
-                    }}
-                  >
-                    {/* Inner embossed ring */}
-                    <div className="w-[80%] h-[80%] rounded-full border-[1.5px] border-[#d8f1ff]/70 border-b-[#2f6f9f]/60 flex items-center justify-center opacity-90 shadow-[inset_0_2px_4px_rgba(0,0,0,0.25)]">
-
-                      {/* Letter */}
-                      <span
-                        className="font-serif text-[#7cc7f2] text-3xl sm:text-4xl italic font-bold drop-shadow-[0_-1px_2px_rgba(0,0,0,0.4)]"
-                        style={{ WebkitTextStroke: "1px #eaf7ff" }}
-                      >
-                        E
-                      </span>
-
-                    </div>
-                  </motion.div>
-
+                  initial={{ opacity: 1, scale: 1 }}
+                  animate={isOpen ? { opacity: 0, scale: 0.8 } : { opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.4 }}
+                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 rounded-full z-[60] flex items-center justify-center drop-shadow-[0_4px_12px_rgba(74,144,226,0.4)] pointer-events-auto transition-transform hover:scale-105"
+                  style={{
+                    backgroundImage: "radial-gradient(circle at 35% 35%, #60a5fa 0%, #3b82f6 50%, #1d4ed8 100%)",
+                    boxShadow: "inset 0 2px 4px rgba(255,255,255,0.3), inset 0 -4px 8px rgba(0,0,0,0.2), 0 4px 10px rgba(0,0,0,0.1)"
+                  }}
+                >
+                  <div className="w-[80%] h-[80%] rounded-full border-[1.5px] border-white/30 border-b-black/20 flex items-center justify-center opacity-90 shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)]">
+                    <span className="font-serif text-white text-3xl sm:text-4xl italic font-bold drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>
+                      E
+                    </span>
+                  </div>
+                </motion.div>
               </div>
 
               {/* Flap Back (Visible when open) */}
@@ -240,7 +245,7 @@ function EnvelopeScreen({ onComplete }: { onComplete: () => void }) {
                     repeat: Infinity,
                     ease: "easeInOut",
                   }}
-                  className="absolute -bottom-16 left-1/2 -translate-x-1/2 text-[11px] sm:text-[12px] tracking-[0.3em] text-white uppercase font-bold whitespace-nowrap drop-shadow-sm pointer-events-none"
+                  className="absolute -bottom-16 left-1/2 -translate-x-1/2 text-[11px] sm:text-[12px] tracking-[0.3em] text-[#7ba1c7] uppercase font-bold whitespace-nowrap drop-shadow-sm pointer-events-none"
                 >
                   Click to Open
                 </motion.span>
@@ -287,10 +292,24 @@ function GalleryScreen({ onClose, onOpenImage }: { onClose: () => void, onOpenIm
               The full gallery
             </p>
           </div>
-          {/* <div className="flex gap-4 hover:bg-[#5c8ab8] cursor-pointer hover:border-[#5c8ab8] hover:text-white items-center border-2 rounded-md px-4 py-1">
-            Google Drive Link
-            <FileImage className="h-5 w-5"/>
-          </div> */}
+          <div className="flex flex-col gap-2">
+            <a
+              href="https://drive.google.com/drive/folders/1_2lMUnX4QCxfnjGzzxPZ8yd8SVRZpKjI"
+              target="_blank"
+              rel="noopener noreferrer" className="flex gap-4 justify-between hover:bg-[#5c8ab8] text-[#7a8494] cursor-pointer hover:border-[#5c8ab8] hover:text-white items-center border-2 rounded-md px-4 py-1">
+              Church Photos
+              <FileImage className="h-5 w-5" />
+            </a>
+            <a
+              href="https://drive.google.com/drive/folders/1Q1P9cxheEoMWGXdS0AasZ6p8G9AC9i6D"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex gap-4 justify-between hover:bg-[#5c8ab8] text-[#7a8494] cursor-pointer hover:border-[#5c8ab8] hover:text-white items-center border-2 rounded-md px-4 py-1"
+            >
+              Reception Photos
+              <FileImage className="h-5 w-5" />
+            </a>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -438,7 +457,7 @@ function MainSite() {
             <p className="tracking-[0.2em] font-medium text-[#5c8ab8] uppercase text-sm sm:text-lg mb-2">
               Saturday, May 16, 2026
             </p>
-            <Sparkles className="absolute -right-6 -bottom-2 w-4 h-4 text-[#7ba1c7] animate-pulse" />
+            <Sparkles className="absolute -right-6 -bottom-0 w-4 h-4 text-[#7ba1c7] animate-pulse" />
           </motion.div>
         </motion.div>
       </section>
