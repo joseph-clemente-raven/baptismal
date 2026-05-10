@@ -119,7 +119,7 @@ function EnvelopeScreen({ onComplete }: { onComplete: () => void }) {
                   Eljoe Eagle J. Ladao
                 </h3>
                 <p className="font-serif text-sm sm:text-base italic text-[#7a8494] font-light drop-shadow-[0_1px_1px_rgba(255,255,255,1)]">
-                  Baptismal Celebration
+                  Baptismal
                 </p>
               </div>
             </motion.div>
