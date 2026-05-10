@@ -245,7 +245,7 @@ function EnvelopeScreen({ onComplete }: { onComplete: () => void }) {
                     repeat: Infinity,
                     ease: "easeInOut",
                   }}
-                  className="absolute -bottom-16 left-1/2 -translate-x-1/2 text-[11px] sm:text-[12px] tracking-[0.3em] text-[#7ba1c7] uppercase font-bold whitespace-nowrap drop-shadow-sm pointer-events-none"
+                  className="absolute -bottom-16 left-1/2 -translate-x-1/2 text-[11px] sm:text-[12px] tracking-[0.3em] text-white uppercase font-bold whitespace-nowrap drop-shadow-sm pointer-events-none"
                 >
                   Click to Open
                 </motion.span>
@@ -294,14 +294,14 @@ function GalleryScreen({ onClose, onOpenImage }: { onClose: () => void, onOpenIm
           </div>
           <div className="flex flex-col gap-2">
             <a
-              href="https://drive.google.com/drive/folders/1_2lMUnX4QCxfnjGzzxPZ8yd8SVRZpKjI"
+              href="https://drive.google.com/drive/folders/1Q1P9cxheEoMWGXdS0AasZ6p8G9AC9i6D"
               target="_blank"
               rel="noopener noreferrer" className="flex gap-4 justify-between hover:bg-[#5c8ab8] text-[#7a8494] cursor-pointer hover:border-[#5c8ab8] hover:text-white items-center border-2 rounded-md px-4 py-1">
               Church Photos
               <FileImage className="h-5 w-5" />
             </a>
             <a
-              href="https://drive.google.com/drive/folders/1Q1P9cxheEoMWGXdS0AasZ6p8G9AC9i6D"
+              href="https://drive.google.com/drive/folders/1_2lMUnX4QCxfnjGzzxPZ8yd8SVRZpKjI"
               target="_blank"
               rel="noopener noreferrer"
               className="flex gap-4 justify-between hover:bg-[#5c8ab8] text-[#7a8494] cursor-pointer hover:border-[#5c8ab8] hover:text-white items-center border-2 rounded-md px-4 py-1"
